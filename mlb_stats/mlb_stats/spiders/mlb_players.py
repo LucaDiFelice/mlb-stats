@@ -1,5 +1,5 @@
 import scrapy
-
+from scrapy.crawler import CrawlerProcess
 
 class MlbPlayersSpider(scrapy.Spider):
     name = "mlb_players"
@@ -10,9 +10,14 @@ class MlbPlayersSpider(scrapy.Spider):
         players = response.css("div.section_content#div_players_")
         for player in players:
             yield {
-                "name" : player.css("p a::text").getall()
+                player.css("p a::text").getall()
             }
         
-        for letter in "bcdefghijklmnopqrstuvwxyz":
+        for letter in "bc":
             next_page_url = "https://www.baseball-reference.com/players/" + letter
             yield response.follow(next_page_url, callback=self.parse)
+
+if __name__ == "__main__":
+    process = CrawlerProcess()
+    process.crawl(MlbPlayersSpider)
+    process.start()
