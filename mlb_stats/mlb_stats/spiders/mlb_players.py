@@ -10,7 +10,7 @@ class MlbPlayersSpider(scrapy.Spider):
         players = response.css("div.section_content#div_players_")
         for player in players:
             yield {
-                player.css("p a::text").getall()
+                "name" : player.css("p a::text").getall()
             }
         
         for letter in "bc":
@@ -18,6 +18,10 @@ class MlbPlayersSpider(scrapy.Spider):
             yield response.follow(next_page_url, callback=self.parse)
 
 if __name__ == "__main__":
-    process = CrawlerProcess()
+    custom_settings = {
+        "FEEDS" : { "player_names.csv": { "format": "csv",}},
+        "LOG_LEVEL" : "WARNING"
+    }
+    process = CrawlerProcess(custom_settings)
     process.crawl(MlbPlayersSpider)
     process.start()
