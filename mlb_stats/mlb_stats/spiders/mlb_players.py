@@ -11,9 +11,9 @@ class MlbPlayersSpider(scrapy.Spider):
 
         for player in players:
             yield {
-                "" : player.css("p a::text").getall()
+                "names" : player.css("p a::text").getall()
             }
-        
+
         for letter in "bc":
             next_page_url = "https://www.baseball-reference.com/players/" + letter
             yield response.follow(next_page_url, callback=self.parse)
