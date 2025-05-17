@@ -8,16 +8,19 @@ class MlbPlayersSpider(scrapy.Spider):
 
     def parse(self, response):
         players = response.css("div.section_content#div_players_")
+
         for player in players:
             yield {
-                "name" : player.css("p a::text").getall()
+                "" : player.css("p a::text").getall()
             }
         
         for letter in "bc":
             next_page_url = "https://www.baseball-reference.com/players/" + letter
             yield response.follow(next_page_url, callback=self.parse)
 
-if __name__ == "__main__":
+
+
+def run_spider():
     custom_settings = {
         "FEEDS" : { "player_names.csv": { "format": "csv",}},
         "LOG_LEVEL" : "WARNING"
