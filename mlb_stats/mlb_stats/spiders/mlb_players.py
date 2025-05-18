@@ -23,7 +23,7 @@ class MlbPlayersSpider(scrapy.Spider):
 def run_spider():
     custom_settings = {
         "FEEDS" : { "player_names.csv": { "format": "csv",}},
-        "LOG_LEVEL" : "WARNING"
+        "LOG_LEVEL" : "WARNING",
     }
     process = CrawlerProcess(custom_settings)
     process.crawl(MlbPlayersSpider)
