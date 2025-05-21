@@ -8,6 +8,10 @@ from scrapy import signals
 # useful for handling different item types with a single interface
 from itemadapter import is_item, ItemAdapter
 
+import requests
+from random import randint
+from urllib.parse import urlencode
+
 
 class MlbStatsSpiderMiddleware:
     # Not all methods need to be defined. If a method is not defined,

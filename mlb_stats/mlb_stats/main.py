@@ -28,10 +28,10 @@ class DictionaryApp(App):
 def main():
     mlb_players.run_spider()
     player_names = []
-    with open("player_names.csv", "r") as player_file:
-        for line in player_file:
-            if line.startswith("") and line.endswith('"\n'):
-                line = line.strip()[1:-1]
-                player_names.extend(line.split(","))
+    #with open("player_names.csv", "r") as player_file:
+        #for line in player_file:
+            #if line.startswith("") and line.endswith('"\n'):
+                #line = line.strip()[1:-1]
+                #player_names.extend(line.split(","))
 
 main()
