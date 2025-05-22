@@ -14,8 +14,6 @@ class MlbPlayersSpider(scrapy.Spider):
                 "names" : player.css("p a::text").getall(),
                 "path_links" : player.css("p a::attr(href)").getall()
             }
-            #yield player.css("p a::text").getall()
-            #yield player.css("p a::attr(href)").getall()
 
         for letter in "bc":
             next_page_url = "https://www.baseball-reference.com/players/" + letter
