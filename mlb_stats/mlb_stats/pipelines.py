@@ -10,8 +10,8 @@ from itemadapter import ItemAdapter
 
 class MlbStatsPipeline:
     def process_item(self, item, spider):
-        file_names = open("player_names.csv", "w")
-        file_links = open("path_links.csv", "w")
+        file_names = open("player_names.csv", "a")
+        file_links = open("path_links.csv", "a")
         if "path_links" in item:
             for link in item["path_links"]:
                 file_links.write(link)
