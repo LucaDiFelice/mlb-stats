@@ -32,11 +32,12 @@ class MlbPlayersSpider(scrapy.Spider):
 
 def run_spider():
     custom_settings = {
-        "FEEDS" : { "raw_data.csv": { "format": "csv",}},
+        #"FEEDS" : { "raw_data.csv": { "format": "csv",}},
         "LOG_LEVEL" : "WARNING",
         "DOWNLOAD_DELAY" : "5",
         "ROBOTSTXT_OBEY" : True,
-        "USER_AGENT" : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        "USER_AGENT" : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "ITEM_PIPELINES" : { "pipelines.MlbStatsPipeline" : 300 }
     }
 
     process = CrawlerProcess(custom_settings)
