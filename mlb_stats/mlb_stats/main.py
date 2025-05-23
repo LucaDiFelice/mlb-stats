@@ -27,7 +27,21 @@ class DictionaryApp(App):
                     #print(line.strip())
 
 def main():
-    mlb_players.run_spider()
+    # runs the spider
+    #mlb_players.run_spider()
+    names = []
+    with open("player_names.csv", "r") as file_names:
+        for line in file_names:
+            names.append(line.strip())
+    if "Tony Zych" in names:
+        print("yes")
+
+    file_names.close()
+
+
+
+
+
     #print(mlb_players.)
     #data = open("raw_data.csv", "r")
     #names = open("player_names.csv", "w")

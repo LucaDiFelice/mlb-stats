@@ -24,7 +24,8 @@ class MlbPlayersSpider(scrapy.Spider):
 
         yield mlb_stats
 
-        for letter in "bcdefghijklmnopqrstuvwxyz":
+        #for letter in "bcdefghijklmnopqrstuvwxyz":
+        for letter in "zyxwuvtsrqponmlkjihgfedcb":
             next_page_url = "https://www.baseball-reference.com/players/" + letter
             yield response.follow(next_page_url, callback=self.parse)
 
