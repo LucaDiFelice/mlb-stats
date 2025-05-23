@@ -7,6 +7,5 @@ import scrapy
 
 
 class MlbStatsItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+    player_names = scrapy.Field()
+    path_links = scrapy.Field()

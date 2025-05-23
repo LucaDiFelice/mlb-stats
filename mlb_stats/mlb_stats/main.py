@@ -1,4 +1,5 @@
-import spiders.mlb_players as mlb_players
+import mlb_players as mlb_players
+
 #from textual import work
 #from textual.app import App, ComposeResult
 #from textual.containers import VerticalScroll
@@ -27,7 +28,7 @@ class DictionaryApp(App):
 
 def main():
     mlb_players.run_spider()
-    player_names = []
+    #print(mlb_players.)
     #data = open("raw_data.csv", "r")
     #names = open("player_names.csv", "w")
     #path_links = open("path_links.csv", "w")

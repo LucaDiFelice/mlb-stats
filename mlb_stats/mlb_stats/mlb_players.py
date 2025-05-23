@@ -1,5 +1,6 @@
 import scrapy
 from scrapy.crawler import CrawlerProcess
+from items import MlbStatsItem
 
 class MlbPlayersSpider(scrapy.Spider):
     name = "mlb_players"
@@ -8,12 +9,20 @@ class MlbPlayersSpider(scrapy.Spider):
 
     def parse(self, response):
         players = response.css("div.section_content#div_players_")
-
+        mlb_stats = MlbStatsItem()
+        names = []
+        links = []
         for player in players:
-            yield {
-                "names" : player.css("p a::text").getall(),
-                "path_links" : player.css("p a::attr(href)").getall()
-            }
+            names.extend(player.css("p a::text").getall())
+            links.extend(player.css("p a::attr(href)").getall())
+            #yield {
+                #"names" : player.css("p a::text").getall(),
+                #"path_links" : player.css("p a::attr(href)").getall()
+            #}
+        mlb_stats["player_names"] = names
+        mlb_stats["path_links"] = links
+
+        yield mlb_stats
 
         for letter in "bc":
             next_page_url = "https://www.baseball-reference.com/players/" + letter
