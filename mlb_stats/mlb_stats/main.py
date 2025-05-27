@@ -1,30 +1,59 @@
 import mlb_players as mlb_players
 
-#from textual import work
-#from textual.app import App, ComposeResult
-#from textual.containers import VerticalScroll
-#from textual.widgets import Input, Markdown
+from textual import work
+from textual.app import App, ComposeResult
+from textual.containers import VerticalScroll
+from textual.widgets import Footer, Label, Tabs
 
-"""
-class DictionaryApp(App):
+TABS = ["Hitting Leaders", "Pitching Leaders", "Search",]
+
+class Mlb_stats_ui(App):
+    CSS = """
+    Tabs {
+        dock: top;
+    }
+    Screen {
+        align: center middle;
+    }
+    Label {
+        margin:1 1;
+        width: 100%;
+        height: 100%;
+        background: $panel;
+        border: tall $primary;
+        content-align: center middle;
+    }
+    """
 
     def compose(self) -> ComposeResult:
-        yield Input(placeholder="Search for a word", id="dictionary-search")
-        with VerticalScroll(id="results-container"):
-            yield Markdown(id="results")
-
-    async def on_input_changed(self, message: Input.Changed) -> None:
-        if message.value:
-            self.lookup_word(message.value)
+        yield Tabs(TABS[0], TABS[1], TABS[2])
+        yield Label()
+        yield Footer()
+        
+    def on_mount(self) -> None:
+        self.query_one(Tabs).focus()
+    
+    def on_tabs_tab_activated(self, event: Tabs.TabActivated) -> None:
+        label = self.query_one(Label)
+        if event.tab is None:
+            label.visible = False
         else:
-            # Clear the results
-            await self.query_one("#results", Markdown).update("")
-"""
-        #@work(exclusive=True)
-        #async def lookup_player(self, word: str) -> None:
-            #with open("player_names.csv", "w") as player_file:
-                #for line in player_file:
-                    #print(line.strip())
+            label.visible = True
+            label.update(event.tab.label)
+    
+    def action_add(self) -> None:
+        tabs = self.query_one(Tabs)
+        TABS[:] = [*TABS[1:], TABS[0]]
+        tabs.add_tab(TABS[0])
+
+    def action_remove(self) -> None:
+        tabs = self.query_one(Tabs)
+        active_tab = tabs.active_tab
+        if active_tab is not None:
+            tabs.remove_tab(active_tab.id)
+
+    def action_clear(self) -> None:
+        self.query_one(Tabs).clear()
 
 def main():
     # runs the spider
@@ -33,25 +62,9 @@ def main():
     with open("player_names.csv", "r") as file_names:
         for line in file_names:
             names.append(line.strip())
-    if "Tony Zych" in names:
-        print("yes")
 
     file_names.close()
-
-
-
-
-
-    #print(mlb_players.)
-    #data = open("raw_data.csv", "r")
-    #names = open("player_names.csv", "w")
-    #path_links = open("path_links.csv", "w")
-    #for line in data:
-        #if line.startswith("") and line.endswith('"\n'):
-    #with open("player_names.csv", "w") as player_file:
-        #for line in player_file:
-            #if line.startswith("") and line.endswith('"\n'):
-                #line = line.strip()[1:-1]
-                #player_names.extend(line.split(","))
-
+    mlb = Mlb_stats_ui()
+    mlb.run()
 main()
+
