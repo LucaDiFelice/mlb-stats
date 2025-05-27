@@ -3,35 +3,42 @@ import mlb_players as mlb_players
 from textual import work
 from textual.app import App, ComposeResult
 from textual.containers import VerticalScroll
-from textual.widgets import Footer, Label, Tabs
+from textual.binding import Binding
+from textual.widgets import Footer, Label, Tabs, TabPane, Button, Markdown, TabbedContent, DataTable
 
 TABS = ["Hitting Leaders", "Pitching Leaders", "Search",]
+hitting_rows = [
+    ("TEAM", "G", "AB", "R", "H", "2B", "3B", "HR", "RBI", "BB", "SO", "SB", "CS", "AVG", "OBP", "SLG", "OPS"),
+]
+pitching_rows = [
+    ("TEAM", "W", "L", "ERA", "G", "GS", "CG", "SHO", "SV", "SVO", "IP", "H", "R", "ER", "HR", "HB", "BB", "SO", "WHIP", "AVG")
+]
+
 
 class Mlb_stats_ui(App):
-    CSS = """
-    Tabs {
-        dock: top;
-    }
-    Screen {
-        align: center middle;
-    }
-    Label {
-        margin:1 1;
-        width: 100%;
-        height: 100%;
-        background: $panel;
-        border: tall $primary;
-        content-align: center middle;
-    }
-    """
 
     def compose(self) -> ComposeResult:
-        yield Tabs(TABS[0], TABS[1], TABS[2])
+        #yield Tabs(TABS[0], TABS[1], TABS[2])
         yield Label()
         yield Footer()
+        with TabbedContent():
+            with TabPane(TABS[0], id="hitting-leaders-id"):
+                yield DataTable(id="hitting-table")
+            with TabPane(TABS[1], id="pitching-leaders-id"):
+                yield DataTable(id="pitching-table")
+            with TabPane(TABS[2], id="search-id"):
+                pass
+
         
     def on_mount(self) -> None:
         self.query_one(Tabs).focus()
+        h_table = self.query_one("#hitting-table", DataTable)
+        h_table.add_columns(*hitting_rows[0])
+        h_table.add_rows(hitting_rows[1:])
+
+        p_table = self.query_one("#pitching-table", DataTable)
+        p_table.add_columns(*pitching_rows[0])
+        p_table.add_rows(pitching_rows[1:])
     
     def on_tabs_tab_activated(self, event: Tabs.TabActivated) -> None:
         label = self.query_one(Label)
@@ -54,6 +61,7 @@ class Mlb_stats_ui(App):
 
     def action_clear(self) -> None:
         self.query_one(Tabs).clear()
+    
 
 def main():
     # runs the spider
