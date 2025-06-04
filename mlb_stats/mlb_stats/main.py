@@ -34,6 +34,9 @@ hitting_leaders = []
 
 class Mlb_stats_ui(App):
 
+    BINDINGS = [
+        ("u", "update", "Update")
+    ]
 
     def compose(self) -> ComposeResult:
         #yield Tabs(TABS[0], TABS[1], TABS[2])
@@ -61,6 +64,7 @@ class Mlb_stats_ui(App):
         h_table = self.query_one(DataTable)
         h_table.add_columns(*hitting_columns[0])
         h_table.add_rows(hitting_leaders)
+        h_table.zebra_stripes = True
 
         h_e_table = self.query_one("#expanded-hitting-table", DataTable)
         h_e_table.add_columns(*expanded_hitting_columns[0])
@@ -102,7 +106,7 @@ class CustomDataTable(DataTable):
         super().__init__()
 
     def on_data_table_header_selected(self, event: Click) -> None:
-        self._sorted_rows = not self._sorted_rows
+        #self._sorted_rows = not self._sorted_rows
         self.sort(event.column_key, reverse=not self._sorted_rows)
     
 
@@ -118,8 +122,9 @@ def main():
             names.append(line.strip())
 
     file_names.close()
+    
     temp = []
-    with open("hitting_leaders.csv", "r") as file_names:
+    with open("hitting_leaders_s.csv", "r") as file_names:
         for line in file_names:
             temp.append(line.strip())
 
@@ -147,8 +152,8 @@ def main():
     #for i in range(len(hitting_leaders)):
     
 
-    print(hitting_leaders)
     mlb = Mlb_stats_ui()
     mlb.run()
+    
 main()
 

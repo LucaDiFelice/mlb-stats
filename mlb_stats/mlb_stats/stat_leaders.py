@@ -42,10 +42,14 @@ class StatLeadersSpider(scrapy.Spider):
                 hitting_leaders[names[i]][1]["Standard"].append(players.css(f"tr:nth-child({ii}) > td:nth-child(8) > a::text").get())
             else:
                 hitting_leaders[names[i]][1]["Standard"].append(players.css(f"tr:nth-child({ii}) > td:nth-child(8)::text").get())
-            if not players.css(f"tr:nth-child({ii}) > td.selected-h6IPIIxg.number-GoaicxKV.align-right-TwjGe_gi.is-table-pinned-lGP8KWTK::text"):
-                hitting_leaders[names[i]][1]["Standard"].append(players.css(f"tr:nth-child({ii}) > td.selected-h6IPIIxg.number-GoaicxKV.align-right-TwjGe_gi.is-table-pinned-lGP8KWTK > a::text").get())
+            #if not players.css(f"tr:nth-child({ii}) > td.selected-h6IPIIxg.number-GoaicxKV.align-right-TwjGe_gi.is-table-pinned-lGP8KWTK::text"):
+                #hitting_leaders[names[i]][1]["Standard"].append(players.css(f"tr:nth-child({ii}) > td.selected-h6IPIIxg.number-GoaicxKV.align-right-TwjGe_gi.is-table-pinned-lGP8KWTK > a::text").get())
+            #else:
+                #hitting_leaders[names[i]][1]["Standard"].append(players.css(f"tr:nth-child({ii}) > td.selected-h6IPIIxg.number-GoaicxKV.align-right-TwjGe_gi.is-table-pinned-lGP8KWTK::text").get())
+            if not players.css(f"tr:nth-child({ii}) > td:nth-child(9)::text"):
+                hitting_leaders[names[i]][1]["Standard"].append(players.css(f"tr:nth-child({ii}) > td:nth-child(9) > a::text").get())
             else:
-                hitting_leaders[names[i]][1]["Standard"].append(players.css(f"tr:nth-child({ii}) > td.selected-h6IPIIxg.number-GoaicxKV.align-right-TwjGe_gi.is-table-pinned-lGP8KWTK::text").get())
+                hitting_leaders[names[i]][1]["Standard"].append(players.css(f"tr:nth-child({ii}) > td:nth-child(9)::text").get())
             if not players.css(f"tr:nth-child({ii}) > td:nth-child(10)::text"):
                 hitting_leaders[names[i]][1]["Standard"].append(players.css(f"tr:nth-child({ii}) > td:nth-child(10) > a::text").get())
             else:
@@ -84,7 +88,11 @@ class StatLeadersSpider(scrapy.Spider):
                 hitting_leaders[names[i]][1]["Standard"].append(players.css(f"tr:nth-child({ii}) > td:nth-child(18)::text").get())
             i += 1
             ii += 1
-
+        
+        for item in ["/games", "/at-bats", "/runs", "/hits", "/doubles", "/triples", "/rbi", "/walks", "/strikeouts", "/stolen-bases", "/caught-stealing", "/batting-average", "/on-base-percentage", "/slugging-percentage", "/ops"]:
+            next_page_url = "https://mlb.com/stats" + item
+            yield response.follow(next_page_url, callback=self.parse)
+        
         yield hitting_leaders
 
 def run_spider():
