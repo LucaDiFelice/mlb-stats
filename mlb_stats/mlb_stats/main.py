@@ -1,5 +1,6 @@
 import mlb_players as mlb_players
 import stat_leaders as stat_leaders
+import e_hitting_leaders as e_hitting_leaders
 
 from rich.text import Text
 
@@ -114,6 +115,10 @@ def main():
 
     # runs the stat_leader spider
     #stat_leaders.run_spider()
+
+    # runs the e_hitting_leaders spider
+    e_hitting_leaders.run_spider()
+    
     names = []
     with open("player_names.csv", "r") as file_names:
         for line in file_names:
@@ -121,6 +126,7 @@ def main():
 
     file_names.close()
     
+    """
     temp = []
     with open("hitting_leaders_s.csv", "r") as file_names:
         for line in file_names:
@@ -152,6 +158,6 @@ def main():
 
     mlb = Mlb_stats_ui()
     mlb.run()
-    
+    """
 main()
 

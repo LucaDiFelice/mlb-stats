@@ -73,3 +73,16 @@ class MlbLeadersPipeline:
             i += 1
         file_leaders.close()
         print(self.names)
+
+class Mlb_E_Hitting_Leaders:
+    names = []
+    def process_item(self, item, spider):
+        file_e_hitting_l = open("e_hitting_stats.csv", "a")
+        for i in range(len(item[0])):
+            index = 0
+            if item[0][i] not in self.names:
+                self.names.append(item[0][i])
+                file_e_hitting_l.write(item[0][i])
+                print(item[0][i])
+                file_e_hitting_l.write("\n")
+        file_e_hitting_l.close()

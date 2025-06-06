@@ -1,16 +1,23 @@
 import scrapy
-
+from scrapy.crawler import CrawlerProcess
 
 class EHittingLeadersSpider(scrapy.Spider):
     name = "e_hitting_leaders"
     allowed_domains = ["www.mlb.com"]
     start_urls = ["https://www.mlb.com/stats"]
 
-    stat_categories = []
+    stat_categories = ["/plate-appearances?expanded=true", "/hit-by-pitch?expanded=true", 
+                       "/sacrifice-bunts?expanded=true", "/sacrifice-fly?expanded=true",
+                       "/double-plays?expanded=true", "/ground-out-fly-out-ratio?expanded=true",
+                       "/extra-base-hits?expanded=true", "/total-bases?expanded=true", 
+                       "/intentional-walks?expanded=true", "/babip?expanded=true",
+                       "/iso?expanded=true", "/at-bats-per-home-run?expanded=true&sortState=asc",
+                       "/walks-per-strikeout?expanded=true", "/walks-per-plate-appearance?expanded=true",
+                       "/strikeouts-per-plate-appearance?expanded=true&sortState=asc"]
 
     def parse(self, response):
         if response.url in "https://www.mlb.com/stats":
-            for stat in ["/plate-appearances?expanded=true"]:
+            for stat in self.stat_categories:
                 next_page_url = "https://www.mlb.com/stats" + stat
                 yield response.follow(next_page_url, callback=self.parse)
         else:
@@ -97,9 +104,15 @@ class EHittingLeadersSpider(scrapy.Spider):
                 ii += 1
             
             
-            yield pa,hbp,sac,sf,gidp,go_ao,xbh,tb,ibb,babip,iso,ab_hr,bb_k,bb_per,so_per
+            yield names,teams,pa,hbp,sac,sf,gidp,go_ao,xbh,tb,ibb,babip,iso,ab_hr,bb_k,bb_per,so_per
 
 def run_spider():
     custom_settings = {
-
+        "LOG_LEVEL" : "WARNING",
+        "ROBOTSTXT_OBEY" : True,
+        "USER_AGENT" : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "ITEM_PIPELINES" : {"pipelines.Mlb_E_Hitting_Leaders" : 300}
     }
+    process = CrawlerProcess(custom_settings)
+    process.crawl(EHittingLeadersSpider)
+    process.start()
