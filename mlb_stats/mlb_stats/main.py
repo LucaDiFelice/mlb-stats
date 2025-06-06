@@ -1,8 +1,7 @@
 import mlb_players as mlb_players
 import stat_leaders as stat_leaders
 
-from operator import itemgetter
-from typing import Any, Self
+from rich.text import Text
 
 from textual._two_way_dict import TwoWayDict
 from textual.app import App, ComposeResult
@@ -108,7 +107,6 @@ class CustomDataTable(DataTable):
     def on_data_table_header_selected(self, event: Click) -> None:
         #self._sorted_rows = not self._sorted_rows
         self.sort(event.column_key, reverse=not self._sorted_rows)
-    
 
 def main():
     # runs the spider

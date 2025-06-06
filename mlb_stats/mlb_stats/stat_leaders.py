@@ -10,9 +10,6 @@ class StatLeadersSpider(scrapy.Spider):
 
     def parse(self, response):
         i = 0
-        stat_i = 0
-        stat2_i = 0
-        stat3_i = 7
         hitting_leaders = {}
         players = response.css("tbody")
         names = players.css("tr > th > div > div.value-wrapper-Ym32XJij > div.top-wrapper-TqtRaIeD > div > a::attr(aria-label)").getall()
@@ -94,7 +91,7 @@ class StatLeadersSpider(scrapy.Spider):
             yield response.follow(next_page_url, callback=self.parse)
         
         yield hitting_leaders
-
+    
 def run_spider():
     custom_settings = {
         #"DOWNLOAD_DELAY" : "5",
