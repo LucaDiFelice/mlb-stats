@@ -69,9 +69,37 @@ class EHittingLeadersSpider(scrapy.Spider):
                     ibb.append(players.css(f"tr:nth-child({ii}) > td:nth-child(11) > a::text").get())
                 else:
                     ibb.append(players.css(f"tr:nth-child({ii}) > td:nth-child(11)::text").get())
+                if not players.css(f"tr:nth-child({ii}) > td:nth-child(12)::text"):
+                    babip.append(players.css(f"tr:nth-child({ii}) > td:nth-child(12) > a::text").get())
+                else:
+                    babip.append(players.css(f"tr:nth-child({ii}) > td:nth-child(12)::text").get())
+                if not players.css(f"tr:nth-child({ii}) > td:nth-child(13)::text"):
+                    iso.append(players.css(f"tr:nth-child({ii}) > td:nth-child(13) > a::text").get())
+                else:
+                    iso.append(players.css(f"tr:nth-child({ii}) > td:nth-child(13)::text").get())
+                if not players.css(f"tr:nth-child({ii}) > td:nth-child(14)::text"):
+                    ab_hr.append(players.css(f"tr:nth-child({ii}) > td:nth-child(14) > a::text").get())
+                else:
+                    ab_hr.append(players.css(f"tr:nth-child({ii}) > td:nth-child(14)::text").get())
+                if not players.css(f"tr:nth-child({ii}) > td:nth-child(15)::text"):
+                    bb_k.append(players.css(f"tr:nth-child({ii}) > td:nth-child(15) > a::text").get())
+                else:
+                    bb_k.append(players.css(f"tr:nth-child({ii}) > td:nth-child(15)::text").get())
+                if not players.css(f"tr:nth-child({ii}) > td:nth-child(16)::text"):
+                    bb_per.append(players.css(f"tr:nth-child({ii}) > td:nth-child(16) > a::text").get())
+                else:
+                    bb_per.append(players.css(f"tr:nth-child({ii}) > td:nth-child(16)::text").get())
+                if not players.css(f"tr:nth-child({ii}) > td:nth-child(16)::text"):
+                    so_per.append(players.css(f"tr:nth-child({ii}) > td:nth-child(17) > a::text").get())
+                else:
+                    so_per.append(players.css(f"tr:nth-child({ii}) > td:nth-child(17)::text").get())
                 i += 1
                 ii += 1
             
             
-            yield names, teams, pa, hbp, sac, sf, gidp, go_ao, xbh, tb, ibb
+            yield pa,hbp,sac,sf,gidp,go_ao,xbh,tb,ibb,babip,iso,ab_hr,bb_k,bb_per,so_per
 
+def run_spider():
+    custom_settings = {
+
+    }
