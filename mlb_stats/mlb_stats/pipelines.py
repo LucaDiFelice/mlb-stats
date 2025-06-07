@@ -108,9 +108,15 @@ class Mlb_E_Hitting_Leaders:
                 file_e_hitting_l.write("\n")
                 file_e_hitting_l.write(item[12][i])
                 file_e_hitting_l.write("\n")
-                file_e_hitting_l.write(item[13][i])
+                if item[13][i] != "-.--":
+                    file_e_hitting_l.write(item[13][i])
+                else:
+                    file_e_hitting_l.write("0.00")
                 file_e_hitting_l.write("\n")
-                file_e_hitting_l.write(item[14][i])
+                if item[14][i] != ".---":
+                    file_e_hitting_l.write(item[14][i])
+                else:
+                    file_e_hitting_l.write(".000")
                 file_e_hitting_l.write("\n")
                 file_e_hitting_l.write(item[15][i])
                 file_e_hitting_l.write("\n")

@@ -11,9 +11,9 @@ class EHittingLeadersSpider(scrapy.Spider):
                        "/double-plays?expanded=true", "/ground-out-fly-out-ratio?expanded=true",
                        "/extra-base-hits?expanded=true", "/total-bases?expanded=true", 
                        "/intentional-walks?expanded=true", "/babip?expanded=true",
-                       "/iso?expanded=true", "/at-bats-per-home-run?expanded=true&sortState=asc",
+                       "/iso?expanded=true", "/at-bats-per-home-run?expanded=true",
                        "/walks-per-strikeout?expanded=true", "/walks-per-plate-appearance?expanded=true",
-                       "/strikeouts-per-plate-appearance?expanded=true&sortState=asc"]
+                       "/strikeouts-per-plate-appearance?expanded=true"]
 
     def parse(self, response):
         if response.url in "https://www.mlb.com/stats":

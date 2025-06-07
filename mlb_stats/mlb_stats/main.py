@@ -30,14 +30,10 @@ expanded_pitching_columns = [
     ("PLAYER", "TEAM", "TBF", "NP", "P/IP", "QS", "GF", "HLD", "IBB", "WP", "BK", "GDP", "GO/AO", "SO/9", "BB/9", "K/BB")
 ]
 hitting_leaders = []
-hitting_leaders_e = [["asdasdasdasdasdasa"]]
+hitting_leaders_e = []
 
 
 class Mlb_stats_ui(App):
-
-    BINDINGS = [
-        ("u", "update", "Update")
-    ]
 
     def compose(self) -> ComposeResult:
         #yield Tabs(TABS[0], TABS[1], TABS[2])
@@ -70,6 +66,7 @@ class Mlb_stats_ui(App):
         h_e_table = self.query_one("#e-hitting-table", CustomDataTable)
         h_e_table.add_columns(*expanded_hitting_columns[0])
         h_e_table.add_rows(hitting_leaders_e)
+        h_e_table.zebra_stripes = True
 
         p_table = self.query_one("#pitching-table", DataTable)
         p_table.add_columns(*pitching_columns[0])
@@ -102,6 +99,7 @@ class Mlb_stats_ui(App):
         self.query_one(Tabs).clear()
 
 class CustomDataTable(DataTable):
+
     def __init__(self, *args, **kwargs) -> None:
         self._sorted_rows = False
         super().__init__(*args, **kwargs)
@@ -111,7 +109,7 @@ class CustomDataTable(DataTable):
         self.sort(event.column_key, reverse=not self._sorted_rows)
 
 def main():
-    # runs the spider
+    # runs the spider that get all players
     #mlb_players.run_spider()
 
     # runs the stat_leader spider
@@ -129,6 +127,7 @@ def main():
     
     
     temp = []
+    
     with open("hitting_leaders_s.csv", "r") as file_names:
         for line in file_names:
             temp.append(line.strip())
@@ -155,10 +154,36 @@ def main():
 
         ii += 1
     #for i in range(len(hitting_leaders)):
-    
+    temp2 = []
+    with open("e_hitting_stats.csv", "r") as file:
+        for line in file:
+            temp2.append(line.strip())
+
+    ii = 0
+    for i in range(0, len(temp2), 17):        
+        hitting_leaders_e.append(temp2[i:i+2])
+        hitting_leaders_e[ii].append(int(temp2[i+2]))
+        hitting_leaders_e[ii].append(int(temp2[i+3]))
+        hitting_leaders_e[ii].append(int(temp2[i+4]))
+        hitting_leaders_e[ii].append(int(temp2[i+5]))
+        hitting_leaders_e[ii].append(int(temp2[i+6]))
+        hitting_leaders_e[ii].append(float(temp2[i+7]))
+        hitting_leaders_e[ii].append(int(temp2[i+8]))
+        hitting_leaders_e[ii].append(int(temp2[i+9]))
+        hitting_leaders_e[ii].append(int(temp2[i+10]))
+        hitting_leaders_e[ii].append(float(temp2[i+11]))
+        hitting_leaders_e[ii].append(float(temp2[i+12]))
+        hitting_leaders_e[ii].append(float(temp2[i+13]))
+        hitting_leaders_e[ii].append(float(temp2[i+14]))
+        hitting_leaders_e[ii].append(float(temp2[i+15]))
+        hitting_leaders_e[ii].append(float(temp2[i+16]))
+        ii += 1
+
+
 
     mlb = Mlb_stats_ui()
     mlb.run()
+    
     
 main()
 
