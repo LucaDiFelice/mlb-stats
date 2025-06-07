@@ -30,6 +30,7 @@ expanded_pitching_columns = [
     ("PLAYER", "TEAM", "TBF", "NP", "P/IP", "QS", "GF", "HLD", "IBB", "WP", "BK", "GDP", "GO/AO", "SO/9", "BB/9", "K/BB")
 ]
 hitting_leaders = []
+hitting_leaders_e = [["asdasdasdasdasdasa"]]
 
 
 class Mlb_stats_ui(App):
@@ -46,9 +47,9 @@ class Mlb_stats_ui(App):
             with TabPane(TABS[0], id="hitting-leaders-id"):
                 with TabbedContent("Standard", "Expanded"):
                     with TabPane(sub_rows[0]):
-                        yield CustomDataTable()
+                        yield CustomDataTable(id="hitting-table")
                     with TabPane(sub_rows[1]):
-                        yield DataTable(id="expanded-hitting-table")
+                        yield CustomDataTable(id="e-hitting-table")
             with TabPane(TABS[1], id="pitching-leaders-id"):
                 with TabbedContent("Standard", "Expanded"):
                     with TabPane(sub_rows[0]):
@@ -61,14 +62,14 @@ class Mlb_stats_ui(App):
         
     def on_mount(self) -> None:
         self.query_one(Tabs).focus()
-        h_table = self.query_one(DataTable)
+        h_table = self.query_one("#hitting-table", CustomDataTable)
         h_table.add_columns(*hitting_columns[0])
         h_table.add_rows(hitting_leaders)
         h_table.zebra_stripes = True
 
-        h_e_table = self.query_one("#expanded-hitting-table", DataTable)
+        h_e_table = self.query_one("#e-hitting-table", CustomDataTable)
         h_e_table.add_columns(*expanded_hitting_columns[0])
-        h_e_table.add_rows(expanded_hitting_columns[1:])
+        h_e_table.add_rows(hitting_leaders_e)
 
         p_table = self.query_one("#pitching-table", DataTable)
         p_table.add_columns(*pitching_columns[0])
@@ -101,9 +102,9 @@ class Mlb_stats_ui(App):
         self.query_one(Tabs).clear()
 
 class CustomDataTable(DataTable):
-    def __init__(self) -> None:
+    def __init__(self, *args, **kwargs) -> None:
         self._sorted_rows = False
-        super().__init__()
+        super().__init__(*args, **kwargs)
 
     def on_data_table_header_selected(self, event: Click) -> None:
         #self._sorted_rows = not self._sorted_rows
@@ -117,7 +118,7 @@ def main():
     #stat_leaders.run_spider()
 
     # runs the e_hitting_leaders spider
-    e_hitting_leaders.run_spider()
+    #e_hitting_leaders.run_spider()
     
     names = []
     with open("player_names.csv", "r") as file_names:
@@ -126,7 +127,7 @@ def main():
 
     file_names.close()
     
-    """
+    
     temp = []
     with open("hitting_leaders_s.csv", "r") as file_names:
         for line in file_names:
@@ -158,6 +159,6 @@ def main():
 
     mlb = Mlb_stats_ui()
     mlb.run()
-    """
+    
 main()
 
