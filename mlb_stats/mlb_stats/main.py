@@ -49,9 +49,9 @@ class Mlb_stats_ui(App):
             with TabPane(TABS[1], id="pitching-leaders-id"):
                 with TabbedContent("Standard", "Expanded"):
                     with TabPane(sub_rows[0]):
-                        yield DataTable(id="pitching-table")
+                        yield CustomDataTable(id="pitching-table")
                     with TabPane(sub_rows[1]):
-                        yield DataTable(id="expanded-pitching-table")
+                        yield CustomDataTable(id="expanded-pitching-table")
             with TabPane(TABS[2], id="search-id"):
                 pass
 
@@ -68,11 +68,11 @@ class Mlb_stats_ui(App):
         h_e_table.add_rows(hitting_leaders_e)
         h_e_table.zebra_stripes = True
 
-        p_table = self.query_one("#pitching-table", DataTable)
+        p_table = self.query_one("#pitching-table", CustomDataTable)
         p_table.add_columns(*pitching_columns[0])
         p_table.add_rows(pitching_columns[1:])
 
-        p_e_table = self.query_one("#expanded-pitching-table", DataTable)
+        p_e_table = self.query_one("#expanded-pitching-table", CustomDataTable)
         p_e_table.add_columns(*expanded_pitching_columns[0])
         p_e_table.add_rows(expanded_pitching_columns[1:])
     
