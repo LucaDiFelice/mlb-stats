@@ -124,3 +124,7 @@ class Mlb_E_Hitting_Leaders:
                 print(item[0][i])
                 file_e_hitting_l.write("\n")
         file_e_hitting_l.close()
+
+class Mlb_pitching_leaders:
+    names = []
+    def process_item(self, item, spider):
