@@ -1,20 +1,20 @@
 import scrapy
+from scrapy.crawler import CrawlerProcess
 
 
 class EPitchingLeadersSpider(scrapy.Spider):
     name = "e_pitching_leaders"
     allowed_domains = ["www.mlb.com"]
     start_urls = ["https://www.mlb.com/stats/pitching"]
-   #category_links = ["/total-batters-faced?expanded=true", "/number-of-pitches?expanded=true",
-                      #"/pitches-per-inning?expanded=true", "/quality-starts?expanded=true",
-                      #"/pitching/games-finished?expanded=true", "/holds?expanded=true",
-                      #"/intentional-walks?expanded=true", "/wild-pitch?expanded=true",
-                      #"/balk?expanded=true", "/grounded-into-double-plays?expanded=true",
-                      #"/ground-out-air-out-ratio?expanded=true", "/strikeouts-per-nine-innings?expanded=true",
-                      #"/walks-per-nine-innings?expanded=true", "/strikeout-to-walk-ratio?expanded=true",
-                      #"/babip?expanded=true", "/stolen-bases-allowed?expanded=true", "/caught-stealing?expanded=true",
-                      #"/pickoff?expanded=true"]
-    category_links = ["/total-batters-faced?expanded=true"]
+    category_links = ["/total-batters-faced?expanded=true", "/number-of-pitches?expanded=true",
+                      "/pitches-per-inning?expanded=true", "/quality-starts?expanded=true",
+                      "/pitching/games-finished?expanded=true", "/holds?expanded=true",
+                      "/intentional-walks?expanded=true", "/wild-pitch?expanded=true",
+                      "/balk?expanded=true", "/grounded-into-double-plays?expanded=true",
+                      "/ground-out-air-out-ratio?expanded=true", "/strikeouts-per-nine-innings?expanded=true",
+                      "/walks-per-nine-innings?expanded=true", "/strikeout-to-walk-ratio?expanded=true",
+                      "/babip?expanded=true", "/stolen-bases-allowed?expanded=true", "/caught-stealing?expanded=true",
+                      "/pickoff?expanded=true"]
 
     def parse(self, response):
         if response.url in "https://www.mlb.com/stats/pitching":
@@ -65,9 +65,17 @@ class EPitchingLeadersSpider(scrapy.Spider):
                 sb.append(players.css(f"tr:nth-child({ii}) > td:nth-child(18)::text").get())
                 cs.append(players.css(f"tr:nth-child({ii}) > td:nth-child(19)::text").get())
                 pk.append(players.css(f"tr:nth-child({ii}) > td:nth-child(20)::text").get())
-
                 i += 1
                 ii += 1
-            yield tbf,np,p_ip,qs,gf,hld,ibb,wp,bk,gdp,go_ao,so_9,bb_9,k_bb,babip,sb,cs,pk
+            yield names,teams,tbf,np,p_ip,qs,gf,hld,ibb,wp,bk,gdp,go_ao,so_9,bb_9,k_bb,babip,sb,cs,pk
 
-
+def run_spider():
+    custom_settings = {
+        "LOG_LEVEL" : "WARNING",
+        "ROBOTSTXT_OBEY" : True,
+        "USER_AGENT" : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "ITEM_PIPELINES" : {"pipelines.Mlb_e_pitching_leaders" : 300}
+    }
+    process = CrawlerProcess(custom_settings)
+    process.crawl(EPitchingLeadersSpider)
+    process.start()
