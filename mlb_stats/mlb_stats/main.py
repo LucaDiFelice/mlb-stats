@@ -22,13 +22,16 @@ hitting_columns = [
     ("PLAYER", "TEAM", "G", "AB", "R", "H", "2B", "3B", "HR", "RBI", "BB", "SO", "SB", "CS", "AVG", "OBP", "SLG", "OPS"),
 ]
 expanded_hitting_columns = [
-    ("PLAYER", "TEAM", "PA", "HBP", "SAC", "SF", "GIDP", "GO/AO", "XBH", "TB", "IBB", "BABIP", "ISO", "AB/HR", "BB/K", "BB%", "SO%")
+    ("PLAYER", "TEAM", "PA", "HBP", "SAC", "SF", "GIDP", "GO/AO", "XBH", 
+     "TB", "IBB", "BABIP", "ISO", "AB/HR", "BB/K", "BB%", "SO%")
 ]
 pitching_columns = [
-    ("PLAYER", "TEAM", "W", "L", "ERA", "G", "GS", "CG", "SHO", "SV", "SVO", "IP", "H", "R", "ER", "HR", "HB", "BB", "SO", "WHIP", "AVG")
+    ("PLAYER", "TEAM", "W", "L", "ERA", "G", "GS", "CG", "SHO", "SV", 
+     "SVO", "IP", "H", "R", "ER", "HR", "HB", "BB", "SO", "WHIP", "AVG")
 ]
 expanded_pitching_columns = [
-    ("PLAYER", "TEAM", "TBF", "NP", "P/IP", "QS", "GF", "HLD", "IBB", "WP", "BK", "GDP", "GO/AO", "SO/9", "BB/9", "K/BB")
+    ("PLAYER", "TEAM", "TBF", "NP", "P/IP", "QS", "GF", "HLD", "IBB", "WP", 
+     "BK", "GDP", "GO/AO", "SO/9", "BB/9", "K/BB", "BABIP", "SB", "CS", "PK")
 ]
 hitting_leaders = []
 hitting_leaders_e = []
