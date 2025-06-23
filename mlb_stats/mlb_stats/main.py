@@ -3,6 +3,8 @@ import stat_leaders as stat_leaders
 import e_hitting_leaders as e_hitting_leaders
 import pitching_leaders as pitching_leaders
 import e_pitching_leaders as e_pitching_leaders_s
+import time
+
 
 from rich.text import Text
 
@@ -41,6 +43,7 @@ e_pitching_leaders_ = []
 
 
 class Mlb_stats_ui(App):
+    BINDINGS = [("u", "update", "Update")]
 
     def compose(self) -> ComposeResult:
         #yield Tabs(TABS[0], TABS[1], TABS[2])
@@ -67,7 +70,9 @@ class Mlb_stats_ui(App):
         self.query_one(Tabs).focus()
         h_table = self.query_one("#hitting-table", CustomDataTable)
         h_table.add_columns(*hitting_columns[0])
-        h_table.add_rows(hitting_leaders)
+        for i in range(0,25):
+            h_table.add_row(*hitting_leaders[i], key=f"boo{i}")
+        #h_table.add_rows(hitting_leaders)
         h_table.zebra_stripes = True
 
         h_e_table = self.query_one("#e-hitting-table", CustomDataTable)
@@ -107,6 +112,14 @@ class Mlb_stats_ui(App):
     def action_clear(self) -> None:
         self.query_one(Tabs).clear()
 
+    def action_update(self) -> None:
+        h_table = self.query_one("#hitting-table")
+        e_h_table = self.query_one("#e-hitting-table")
+        p_table = self.query_one("#pitching-table")
+        e_p_table = self.query_one("#expanded-pitching-table")
+        for i in range(len(hitting_leaders)):
+            h_table.remove_row(f"boo{i}")
+
 class CustomDataTable(DataTable):
 
     def __init__(self, *args, **kwargs) -> None:
@@ -117,7 +130,21 @@ class CustomDataTable(DataTable):
         #self._sorted_rows = not self._sorted_rows
         self.sort(event.column_key, reverse=not self._sorted_rows)
 
+def update_stats():
+    pass
+
 def main():
+    #with open("pitching_leaders.csv", "w") as file_names:
+        #pass
+    #with open("hitting_leaders_s.csv", "w") as file_names:
+        #pass
+    #with open("e_hitting_stats.csv", "w") as file_names:
+        #pass
+    #with open("e_pitching_leaders.csv", "w") as file_names:
+        #pass
+
+
+
     # runs the spider that get all players
     #mlb_players.run_spider()
 
@@ -132,7 +159,8 @@ def main():
 
     #runs the e_pitching_leaders spider
     #e_pitching_leaders_s.run_spider()
-    
+
+
     names = []
     with open("player_names.csv", "r") as file_names:
         for line in file_names:
