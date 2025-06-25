@@ -1,12 +1,20 @@
 import scrapy
 from scrapy.crawler import CrawlerProcess
 
+
 categories = []
 
 class StatLeadersSpider(scrapy.Spider):
     name = "stat_leaders"
     allowed_domains = ["mlb.com"]
     start_urls = ["https://mlb.com/stats"]
+
+    custom_settings = {
+        "LOG_LEVEL" : "WARNING",
+        "ROBOTSTXT_OBEY" : True,
+        "USER_AGENT" : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "ITEM_PIPELINES" : { "pipelines.MlbLeadersPipeline" : 300}
+    }
 
     def parse(self, response):
         i = 0
@@ -18,6 +26,7 @@ class StatLeadersSpider(scrapy.Spider):
         i = 0
         ii = 1
         num = 1
+        
         while i < len(names):
             if names[i] not in hitting_leaders:
                 hitting_leaders[names[i]] = []
@@ -98,12 +107,12 @@ def run_spider():
         "LOG_LEVEL" : "WARNING",
         "ROBOTSTXT_OBEY" : True,
         "USER_AGENT" : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-        "ITEM_PIPELINES" : { "pipelines.MlbLeadersPipeline" : 300}
+        "ITEM_PIPELINES" : { "mlb.stats.pipelines.MlbLeadersPipeline" : 300}
     }
 
     process = CrawlerProcess(custom_settings)
     process.crawl(StatLeadersSpider)
     process.start()
-
+    process.stop()
 
 #backup

@@ -28,7 +28,6 @@ class MlbLeadersPipeline:
     names = []
     def process_item(self, item, spider):
         file_leaders = open("hitting_leaders_s.csv", "a")
-
         i = 0
         keys = list(item.keys())
         for name in item:
@@ -72,11 +71,11 @@ class MlbLeadersPipeline:
                 file_leaders.write("\n")
             i += 1
         file_leaders.close()
-        print(self.names)
 
 class Mlb_E_Hitting_Leaders:
     names = []
     def process_item(self, item, spider):
+        #print(item)
         file_e_hitting_l = open("e_hitting_stats.csv", "a")
         for i in range(len(item[0])):
             index = 0
@@ -121,14 +120,14 @@ class Mlb_E_Hitting_Leaders:
                 file_e_hitting_l.write(item[15][i])
                 file_e_hitting_l.write("\n")
                 file_e_hitting_l.write(item[16][i])
-                print(item[0][i])
+                #print(item[0][i])
                 file_e_hitting_l.write("\n")
         file_e_hitting_l.close()
 
 class Mlb_pitching_leaders:
     names = []
     def process_item(self, item, spider):
-        file_pitching_l = open("pitching_leaders.csv", "w")
+        file_pitching_l = open("pitching_leaders.csv", "a")
         for i in range(len(item[0])):
             index = 0
             if item[0][i] not in self.names:

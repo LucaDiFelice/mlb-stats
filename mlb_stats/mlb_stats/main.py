@@ -1,8 +1,13 @@
 import mlb_players as mlb_players
-import stat_leaders as stat_leaders
-import e_hitting_leaders as e_hitting_leaders
-import pitching_leaders as pitching_leaders
-import e_pitching_leaders as e_pitching_leaders_s
+#import mlb_stats.spiders.stat_leaders as stat_leaders
+#import e_hitting_leaders as e_hitting_leaders
+#import pitching_leaders as pitching_leaders
+#import e_pitching_leaders as e_pitching_leaders_s
+from e_hitting_leaders import EHittingLeadersSpider
+from pitching_leaders import PitchingLeadersSpider
+from e_pitching_leaders import EPitchingLeadersSpider
+from stat_leaders import StatLeadersSpider
+from scrapy.crawler import CrawlerProcess
 import time
 
 
@@ -70,9 +75,9 @@ class Mlb_stats_ui(App):
         self.query_one(Tabs).focus()
         h_table = self.query_one("#hitting-table", CustomDataTable)
         h_table.add_columns(*hitting_columns[0])
-        for i in range(0,25):
-            h_table.add_row(*hitting_leaders[i], key=f"boo{i}")
-        #h_table.add_rows(hitting_leaders)
+        #for i in range(0,len(hitting_leaders)):
+            #h_table.add_row(*hitting_leaders[i], key=f"boo{i}")
+        h_table.add_rows(hitting_leaders)
         h_table.zebra_stripes = True
 
         h_e_table = self.query_one("#e-hitting-table", CustomDataTable)
@@ -117,7 +122,7 @@ class Mlb_stats_ui(App):
         e_h_table = self.query_one("#e-hitting-table")
         p_table = self.query_one("#pitching-table")
         e_p_table = self.query_one("#expanded-pitching-table")
-        for i in range(len(hitting_leaders)):
+        for i in range(25,len(hitting_leaders)):
             h_table.remove_row(f"boo{i}")
 
 class CustomDataTable(DataTable):
@@ -131,18 +136,15 @@ class CustomDataTable(DataTable):
         self.sort(event.column_key, reverse=not self._sorted_rows)
 
 def update_stats():
-    pass
-
-def main():
-    #with open("pitching_leaders.csv", "w") as file_names:
-        #pass
-    #with open("hitting_leaders_s.csv", "w") as file_names:
-        #pass
-    #with open("e_hitting_stats.csv", "w") as file_names:
-        #pass
-    #with open("e_pitching_leaders.csv", "w") as file_names:
-        #pass
-
+    with open("pitching_leaders.csv", "w") as file_names:
+        pass
+    with open("hitting_leaders_s.csv", "w") as file_names:
+        pass
+    with open("e_hitting_stats.csv", "w") as file_names:
+        pass
+    with open("e_pitching_leaders.csv", "w") as file_names:
+        pass
+    #time.sleep(3)
 
 
     # runs the spider that get all players
@@ -150,16 +152,27 @@ def main():
 
     # runs the stat_leader spider
     #stat_leaders.run_spider()
+    #time.sleep(6)
 
     # runs the e_hitting_leaders spider
     #e_hitting_leaders.run_spider()
+    #time.sleep(6)
 
     #runs the pitching_leaders spider
     #pitching_leaders.run_spider()
+    #time.sleep(6)
 
     #runs the e_pitching_leaders spider
     #e_pitching_leaders_s.run_spider()
+    #time.sleep(6)
 
+
+    process = CrawlerProcess()
+    process.crawl(EHittingLeadersSpider)
+    process.crawl(PitchingLeadersSpider)
+    process.crawl(EPitchingLeadersSpider)
+    process.crawl(StatLeadersSpider)
+    process.start()
 
     names = []
     with open("player_names.csv", "r") as file_names:
@@ -252,12 +265,13 @@ def main():
         ii += 1
     
     temp4 = []
+    
     with open("e_pitching_leaders.csv", "r") as file:
         for line in file:
             temp4.append(line.strip())
 
     ii = 0
-    for i in range(0,len(temp3), 20):
+    for i in range(0,len(temp4), 20):
         e_pitching_leaders_.append(temp4[i:i+2])
         e_pitching_leaders_[ii].append(int(temp4[i+2]))
         e_pitching_leaders_[ii].append(int(temp4[i+3]))
@@ -278,8 +292,10 @@ def main():
         e_pitching_leaders_[ii].append(int(temp4[i+18]))
         e_pitching_leaders_[ii].append(int(temp4[i+19]))
         ii += 1
-    
 
+    
+def main():
+    update_stats()
     mlb = Mlb_stats_ui()
     mlb.run()
     

@@ -15,6 +15,13 @@ class EHittingLeadersSpider(scrapy.Spider):
                        "/walks-per-strikeout?expanded=true", "/walks-per-plate-appearance?expanded=true",
                        "/strikeouts-per-plate-appearance?expanded=true"]
 
+    custom_settings = {
+        "LOG_LEVEL" : "WARNING",
+        "ROBOTSTXT_OBEY" : True,
+        "USER_AGENT" : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "ITEM_PIPELINES" : {"pipelines.Mlb_E_Hitting_Leaders" : 300}
+    }
+
     def parse(self, response):
         if response.url in "https://www.mlb.com/stats":
             for stat in self.stat_categories:
